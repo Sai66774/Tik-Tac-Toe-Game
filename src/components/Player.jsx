@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-export function Player({name, symbol}){
+export function Player({name, symbol, isActive}){
     const [isEditing, setIsEditing]= useState(false);
     let buttonName="Edit";
     let playerName;
     const [dynamicName, setDynamicName]= useState(name);
     if(isEditing){
         buttonName="Save";
-        playerName=(<input type="text" defaultValue={dynamicName} onChange={nameChange}required/>)
+        playerName=(<input type="text" defaultValue={dynamicName} onChange={onNameChange}required/>)
     }else{
         buttonName='Edit';
         playerName=(<span className="player-name">{dynamicName}</span>);
@@ -17,16 +17,13 @@ export function Player({name, symbol}){
         setIsEditing(edit=> !edit);
     }
 
-    function nameChange(event){
+    function onNameChange(event){
         console.log(event);
         setDynamicName(event.target.value);
     }
-
-    // function handle
-
     return (
         <>
-            <li>
+            <li className={isActive ? 'active': undefined}>
                 <span className="player">
                     {playerName}
                     <span className="player-symbol">{symbol}</span>
