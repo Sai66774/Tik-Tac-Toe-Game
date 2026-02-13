@@ -2,24 +2,27 @@ import { useState } from "react";
 
 export function Player({name, symbol, isActive}){
     const [isEditing, setIsEditing]= useState(false);
+    const [dynamicName, setDynamicName]= useState(name);
+    const [tempName, setTempName]= useState(name);
     let buttonName="Edit";
     let playerName;
-    const [dynamicName, setDynamicName]= useState(name);
+
     if(isEditing){
         buttonName="Save";
         playerName=(<input type="text" defaultValue={dynamicName} onChange={onNameChange}required/>)
     }else{
         buttonName='Edit';
         playerName=(<span className="player-name">{dynamicName}</span>);
+        
     }
-
     function onEdit(){
+        if(isEditing) setDynamicName(tempName);
         setIsEditing(edit=> !edit);
     }
 
     function onNameChange(event){
         console.log(event);
-        setDynamicName(event.target.value);
+        setTempName(event.target.value);
     }
     return (
         <>
