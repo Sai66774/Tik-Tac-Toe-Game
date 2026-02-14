@@ -17,27 +17,15 @@ function App() {
     'O': 'player 2'
   });
   const [gameLog, setGameLog] = useState([]);
-  // const [activePlayer, setactivePlayer] = useState("X");
   const activePlayer = deriveActivePlayer(gameLog);
   let gameBoard = selectedSquaresLogic(gameLog);
-  let winner;
+  let winner=checkWinner(gameBoard,playerNames);
   let hasDraw = gameLog.length === 9 && !winner;
-
-  for (const combo of WINNING_COMBINATIONS) {
-    const firstSquareSymbol = gameBoard[combo[0].row][combo[0].column];
-    const secondSquareSymbol = gameBoard[combo[1].row][combo[1].column];
-    const thirdSquareSymbol = gameBoard[combo[2].row][combo[2].column];
-
-    if (firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
-      winner = playerNames[firstSquareSymbol];
-    }
-  }
 
   function handledSelectSquare(rowIndex, colIndex) {
     setGameLog((prevTurns) => {
       const currentPlayer = deriveActivePlayer(gameLog);
-      const updatedTurns = [
-        {
+      const updatedTurns = [{
           square: { row: rowIndex, col: colIndex },
           player: currentPlayer,
         },
@@ -50,8 +38,6 @@ function App() {
 
   function rematach() {
     console.log("Restarted the game");
-    winner = undefined;
-    hasDraw = false;
     setGameLog([]);
     setPlayerNames({
       X: 'Player 1',
@@ -104,6 +90,18 @@ function deriveActivePlayer(gameLog) {
   return currentPlayer;
 }
 
+function checkWinner(gameBoard, playerNames){
+  let winner;
+  for (const combo of WINNING_COMBINATIONS) {
+    const firstSquareSymbol = gameBoard[combo[0].row][combo[0].column];
+    const secondSquareSymbol = gameBoard[combo[1].row][combo[1].column];
+    const thirdSquareSymbol = gameBoard[combo[2].row][combo[2].column];
 
+    if (firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
+      winner = playerNames[firstSquareSymbol];
+    }
+  }
+  return winner;
+}
 
 export default App
